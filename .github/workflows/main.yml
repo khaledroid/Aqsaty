@@ -1,0 +1,27 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Build with Buildozer
+        uses: ArtemShtepenko/buildozer-action@v1.2.0
+        id: buildozer
+        with:
+          command: buildozer -v android debug
+          subfolder: .
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Aqsaty-APK
+          path: bin/*.apk
